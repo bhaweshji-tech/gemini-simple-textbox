@@ -1,4 +1,4 @@
-import { GoogleGenAI } from '@google/generative-ai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export async function POST(request) {
   try {
@@ -6,16 +6,14 @@ export async function POST(request) {
     const { text } = await request.json();
 
     // 2. Initialize the Gemini client using the environment variable
-    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-    // 3. Call the Gemini 2.5 Flash model (great for fast text tasks)
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: text,
-    });
+    // 3. Call the Gemini 2.5 Flash model
+    const response = await ai.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const result = await response.generateContent(text);
 
     // 4. Send the generated text back to our frontend webpage
-    return new Response(JSON.stringify({ output: response.text }), {
+    return new Response(JSON.stringify({ output: result.response.text() }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
