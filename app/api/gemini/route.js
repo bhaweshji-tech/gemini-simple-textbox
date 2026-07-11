@@ -9,7 +9,7 @@ export async function POST(request) {
     const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
     // 3. Call the Gemini 2.5 Flash model
-    const response = await ai.getGenerativeModel({ model: 'gemini-2.5-flash-latest' });
+    const response = await ai.getGenerativeModel({ model: 'gemini-3.5-flash' });
     const result = await response.generateContent(text);
 
     // 4. Send the generated text back to our frontend webpage
